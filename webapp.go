@@ -1,18 +1,16 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 
-	"github.com/julienschmidt/httprouter"
+	"github.com/vdjurovic/go-webapp-sample/controllers"
 )
 
-func extractPathParam(writer http.ResponseWriter, request *http.Request, router httprouter.Params) {
-	fmt.Fprintf(writer, "parameter value: %s", router.ByName("name"))
-}
+// func extractPathParam(writer http.ResponseWriter, request *http.Request, router httprouter.Params) {
+// 	fmt.Fprintf(writer, "parameter value: %s", router.ByName("name"))
+// }
 
 func main() {
-	router := httprouter.New()
-	router.GET("/some/:name/path", extractPathParam)
+	router := controllers.InitRoutes()
 	http.ListenAndServe(":8080", router)
 }

@@ -8,6 +8,7 @@ import (
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
+	"github.com/vdjurovic/go-webapp-sample/db"
 	"github.com/vdjurovic/go-webapp-sample/model"
 )
 
@@ -22,6 +23,7 @@ func userRegistration(writer http.ResponseWriter, request *http.Request, router 
 	if err != nil {
 		panic(err)
 	}
+	// another way to read request body
 	// decoder := json.NewDecoder(request.Body)
 	// var user model.User
 	// err := decoder.Decode(&user)
@@ -30,8 +32,11 @@ func userRegistration(writer http.ResponseWriter, request *http.Request, router 
 	// }
 	// defer request.Body.Close()
 	log.Println(user)
-	out, _ := json.Marshal(user)
-	writer.Write(out)
+
+	id := db.SaveUser(user)
+	log.Println(id)
+	writer.WriteHeader(http.StatusCreated)
+
 }
 
 func getAllUsers(writer http.ResponseWriter, requset *http.Request, _ httprouter.Params) {
